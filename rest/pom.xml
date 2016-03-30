@@ -6,29 +6,29 @@
   <!-- Module Metadata -->
   <parent>
     <groupId>com.wcinformatics.tt</groupId>
-    <artifactId>tt-parent</artifactId>
+    <artifactId>ssk-parent</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>tt-rest</artifactId>
+  <artifactId>ssk-rest</artifactId>
   <packaging>war</packaging>
-  <name>WCI Terminology Transformer Project REST service implementation</name>
+  <name>WCI SNOMED Starter Kit Project REST service implementation</name>
   <description>REST service implementation.</description>
 
   <properties>
     <!-- Specify the config artifact parameters -->
     <config.groupId>com.wcinformatics.tt</config.groupId>
-    <config.artifactId>tt-config-dev-windows</config.artifactId>
+    <config.artifactId>ssk-config-dev-windows</config.artifactId>
     <config.version>${project.version}</config.version>
 
     <!-- Defaults for Eclipse dev -->
-    <deploy.title>WCI Terminology Transformer</deploy.title>
+    <deploy.title>WCI SNOMED Starter Kit</deploy.title>
     <site.tracking.code></site.tracking.code>
     <deploy.footer.copyright>(c) Copyright WCI, LLC 2016</deploy.footer.copyright>
     <deploy.presented.by></deploy.presented.by>
     <base.url>http://localhost:8080</base.url>
-    <logout.url>http://localhost:8080/tt-rest/index.html</logout.url>
+    <logout.url>http://localhost:8080/ssk-rest/index.html</logout.url>
   </properties>
 
   <dependencies>
@@ -36,15 +36,15 @@
     <!-- Model interfaces. -->
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-jpa-model</artifactId>
+      <artifactId>ssk-jpa-model</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-jpa-services</artifactId>
+      <artifactId>ssk-jpa-services</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-model</artifactId>
+      <artifactId>ssk-model</artifactId>
     </dependency>
 
     <!-- Term server dependencies -->
@@ -135,7 +135,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warName>tt-rest</warName>
+          <warName>ssk-rest</warName>
           <attachClasses>false</attachClasses>
           <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
           <webResources>
@@ -200,7 +200,7 @@
         </configuration>
       </plugin>
 
-      <!-- Assemble resources into tt-rest*-classes.jar -->
+      <!-- Assemble resources into ssk-rest*-classes.jar -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>

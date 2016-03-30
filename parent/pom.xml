@@ -6,12 +6,12 @@
   <!-- Module Metadata -->
 
   <groupId>com.wcinformatics.tt</groupId>
-  <artifactId>tt-parent</artifactId>
+  <artifactId>ssk-parent</artifactId>
   <version>1.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>WCI Terminology Transformer Project parent</name>
+  <name>WCI SNOMED Starter Kit Project parent</name>
   <description>Parent project. Used to define versions of third party modules</description>
-  <url>https://github.com/WestCoastInformatics/Terminology-Transformer</url>
+  <url>https://github.com/WestCoastInformatics/SNOMED-Starter-Kit</url>
 
   <licenses>
     <license>
@@ -34,18 +34,25 @@
       <organizationUrl>http://www.westcoastinformatics.com</organizationUrl>
     </developer>
     <developer>
+      <name>Deborah Shapiro</name>
+      <email>dshapiro@westcoastinformatics.com</email>
+      <organization>West Coast Informatics, LLC</organization>
+      <organizationUrl>http://www.westcoastinformatics.com</organizationUrl>
+    </developer>
+    <developer>
       <name>Patrick Granvold</name>
       <email>pgranvold@westcoastinformatics.com</email>
       <organization>West Coast Informatics, LLC</organization>
       <organizationUrl>http://www.westcoastinformatics.com</organizationUrl>
     </developer>
+
   </developers>
 
   <!-- Git SCM connection -->
   <scm>
-    <connection>scm:git:git@github.com:WestCoastInformatics/Terminology-Transformer.git</connection>
-    <developerConnection>scm:git:git@github.com:WestCoastInformatics/Terminology-Transformer.git</developerConnection>
-    <url>https://github.com/WestCoastInformatics/Terminology-Transformer</url>
+    <connection>scm:git:git@github.com:WestCoastInformatics/SNOMED-Starter-Kit.git</connection>
+    <developerConnection>scm:git:git@github.com:WestCoastInformatics/SNOMED-Starter-Kit.git</developerConnection>
+    <url>https://github.com/WestCoastInformatics/SNOMED-Starter-Kit</url>
   </scm>
 
   <properties>
@@ -69,34 +76,34 @@
       <!-- Dependencies. -->
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-model</artifactId>
+        <artifactId>ssk-model</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-services</artifactId>
+        <artifactId>ssk-services</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-jpa-model</artifactId>
+        <artifactId>ssk-jpa-model</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-jpa-services</artifactId>
+        <artifactId>ssk-jpa-services</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-rest</artifactId>
+        <artifactId>ssk-rest</artifactId>
         <version>${releaseVersion}</version>
         <classifier>classes</classifier>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>com.wcinformatics.tt</groupId>
-        <artifactId>tt-rest-client</artifactId>
+        <artifactId>ssk-rest-client</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
 

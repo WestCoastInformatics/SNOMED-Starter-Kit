@@ -5,13 +5,13 @@
   <!-- Module Metadata -->
   <parent>
     <groupId>com.wcinformatics.tt</groupId>
-    <artifactId>tt-parent</artifactId>
+    <artifactId>ssk-parent</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>tt-integration-test</artifactId>
-  <name>WCI Terminology Transformer Project integration test module</name>
+  <artifactId>ssk-integration-test</artifactId>
+  <name>WCI SNOMED Starter Kit Project integration test module</name>
   <description>Performs integration tests given a test configuration and a running service.</description>
 
   <!-- Avoid running integration tests by default -->
@@ -25,12 +25,12 @@
     <!-- Dependencies -->
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-rest-client</artifactId>
+      <artifactId>ssk-rest-client</artifactId>
     </dependency>
 
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-rest</artifactId>
+      <artifactId>ssk-rest</artifactId>
       <classifier>classes</classifier>
       <type>jar</type>
     </dependency>

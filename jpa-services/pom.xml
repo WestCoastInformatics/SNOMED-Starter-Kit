@@ -6,13 +6,13 @@
   <!-- Module Metadata -->
   <parent>
     <groupId>com.wcinformatics.tt</groupId>
-    <artifactId>tt-parent</artifactId>
+    <artifactId>ssk-parent</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>tt-jpa-services</artifactId>
-  <name>WCI Terminology Transformer Project JPA service implementations</name>
+  <artifactId>ssk-jpa-services</artifactId>
+  <name>WCI SNOMED Starter Kit Project JPA service implementations</name>
   <description>JPA-enabled implementations of services.</description>
 
   <!-- Declare Project Dependency Versions -->
@@ -21,15 +21,15 @@
     <!-- Model interfaces. -->
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-model</artifactId>
+      <artifactId>ssk-model</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-jpa-model</artifactId>
+      <artifactId>ssk-jpa-model</artifactId>
     </dependency>
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-services</artifactId>
+      <artifactId>ssk-services</artifactId>
     </dependency>
 
     <dependency>

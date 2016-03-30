@@ -5,13 +5,13 @@
   <!-- Module Metadata -->
   <parent>
     <groupId>com.wcinformatics.tt</groupId>
-    <artifactId>tt-parent</artifactId>
+    <artifactId>ssk-parent</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>tt-rest-client</artifactId>
-  <name>WCI Terminology Transformer Project service REST client</name>
+  <artifactId>ssk-rest-client</artifactId>
+  <name>WCI SNOMED Starter Kit Project service REST client</name>
   <description>Performs calls against REST services.</description>
 
   <!-- Declare Project Dependency Versions -->
@@ -20,12 +20,12 @@
     <!-- Model interfaces. -->
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-jpa-services</artifactId>
+      <artifactId>ssk-jpa-services</artifactId>
     </dependency>
 
     <dependency>
       <groupId>com.wcinformatics.tt</groupId>
-      <artifactId>tt-services</artifactId>
+      <artifactId>ssk-services</artifactId>
     </dependency>
 
     <!-- term server dependencies -->

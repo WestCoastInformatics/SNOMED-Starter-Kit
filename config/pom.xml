@@ -5,14 +5,14 @@
   <!-- Module Metadata -->
   <parent>
     <groupId>com.wcinformatics.tt</groupId>
-    <artifactId>tt-parent</artifactId>
+    <artifactId>ssk-parent</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
-  <artifactId>tt-config</artifactId>
+  <artifactId>ssk-config</artifactId>
   <packaging>pom</packaging>
-  <name>WCI Terminology Transformer configuration project</name>
+  <name>WCI SNOMED Starter Kit configuration project</name>
   <description>Sample data and template configuration files.</description>
 
   <!-- Assemble and attach resources -->
