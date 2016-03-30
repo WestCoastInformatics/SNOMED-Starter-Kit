@@ -5,9 +5,9 @@
 
   <!-- Module Metadata -->
 
-  <groupId>com.wcinformatics.tt</groupId>
+  <groupId>com.wcinformatics.ssk</groupId>
   <artifactId>ssk-parent</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>0.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>WCI SNOMED Starter Kit Project parent</name>
   <description>Parent project. Used to define versions of third party modules</description>
@@ -75,34 +75,34 @@
 
       <!-- Dependencies. -->
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-model</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-services</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-jpa-model</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-jpa-services</artifactId>
         <version>${releaseVersion}</version>
       </dependency>
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-rest</artifactId>
         <version>${releaseVersion}</version>
         <classifier>classes</classifier>
         <type>jar</type>
       </dependency>
       <dependency>
-        <groupId>com.wcinformatics.tt</groupId>
+        <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-rest-client</artifactId>
         <version>${releaseVersion}</version>
       </dependency>

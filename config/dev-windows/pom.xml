@@ -4,9 +4,9 @@
 
   <!-- Module Metadata -->
   <parent>
-    <groupId>com.wcinformatics.tt</groupId>
+    <groupId>com.wcinformatics.ssk</groupId>
     <artifactId>ssk-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
     <relativePath>../../parent</relativePath>
   </parent>
 

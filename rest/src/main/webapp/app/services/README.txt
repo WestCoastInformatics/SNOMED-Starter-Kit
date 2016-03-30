@@ -1,1 +1,0 @@
-This folder is for Terminology Transformer services and factories

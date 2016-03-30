@@ -4,9 +4,9 @@
 
   <!-- Module Metadata -->
   <parent>
-    <groupId>com.wcinformatics.tt</groupId>
+    <groupId>com.wcinformatics.ssk</groupId>
     <artifactId>ssk-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>0.9.0-SNAPSHOT</version>
     <relativePath>../parent</relativePath>
   </parent>
 
@@ -34,17 +34,17 @@
   <dependencies>
     <!-- Inter-module dependencies -->
     <dependency>
-      <groupId>com.wcinformatics.tt</groupId>
+      <groupId>com.wcinformatics.ssk</groupId>
       <artifactId>ssk-jpa-model</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.wcinformatics.tt</groupId>
+      <groupId>com.wcinformatics.ssk</groupId>
       <artifactId>ssk-rest</artifactId>
       <classifier>classes</classifier>
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>com.wcinformatics.tt</groupId>
+      <groupId>com.wcinformatics.ssk</groupId>
       <artifactId>ssk-rest-client</artifactId>
     </dependency>
 
@@ -72,7 +72,7 @@
 
           <!-- Create the database schema (or create it) -->
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <version>${project.version}</version>
             <executions>
@@ -100,7 +100,7 @@
 
           <!-- Update the database schema (or create it) -->
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <version>${project.version}</version>
             <executions>
@@ -216,7 +216,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <executions>
               <execution>
@@ -245,7 +245,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <executions>
               <execution>
@@ -273,7 +273,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <executions>
               <execution>
@@ -299,7 +299,7 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>com.wcinformatics.tt</groupId>
+            <groupId>com.wcinformatics.ssk</groupId>
             <artifactId>ssk-admin</artifactId>
             <executions>
               <execution>

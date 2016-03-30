@@ -13,7 +13,6 @@ import java.util.Set;
 
 import com.wci.tt.DataContext;
 import com.wci.tt.jpa.services.helper.DataContextMatcher;
-import com.wci.tt.services.handlers.ProviderHandler;
 
 /**
  * Abstract handler for the "accepts" method - used for ConverterHandler and

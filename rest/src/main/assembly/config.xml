@@ -7,7 +7,7 @@
     <fileSet>
       <directory>${project.build.directory}/classes</directory>
       <excludes>
-        <exclude>**/TerminologyTransformerServerApplication*.class</exclude>
+        <exclude>**/SnomedStarterKitServerApplication*.class</exclude>
       </excludes>
       <outputDirectory>/</outputDirectory>
     </fileSet>

@@ -25,7 +25,7 @@ import com.wordnik.swagger.jaxrs.config.BeanConfig;
  * listener.
  */
 @ApplicationPath("/")
-public class TerminologyTransformerServerApplication extends Application {
+public class SnomedStarterKitServerApplication extends Application {
 
   /** The API_VERSION - also used in "swagger.htmL" */
   public final static String API_VERSION = "1.0.0";
@@ -34,16 +34,16 @@ public class TerminologyTransformerServerApplication extends Application {
   Timer timer;
 
   /**
-   * Instantiates an empty {@link TerminologyTransformerServerApplication}.
+   * Instantiates an empty {@link SnomedStarterKitServerApplication}.
    *
    * @throws Exception the exception
    */
-  public TerminologyTransformerServerApplication() throws Exception {
+  public SnomedStarterKitServerApplication() throws Exception {
     Logger.getLogger(getClass())
-        .info("WCI Terminology Transformer APPLICATION START");
+        .info("WCI SNOMED Starter Kit APPLICATION START");
     BeanConfig beanConfig = new BeanConfig();
-    beanConfig.setTitle("WCI Terminology Transformer service API");
-    beanConfig.setDescription("RESTful calls for WCI Terminology Transformer");
+    beanConfig.setTitle("WCI SNOMED Starter Kit service API");
+    beanConfig.setDescription("RESTful calls for WCI SNOMED Starter Kit");
     beanConfig.setVersion(API_VERSION);
     beanConfig.setBasePath(
         ConfigUtility.getConfigProperties().getProperty("base.url"));

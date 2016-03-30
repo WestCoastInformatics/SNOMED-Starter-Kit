@@ -5,7 +5,7 @@
 <web-app>
 	<display-name>SNOMED Starter Kit REST Services</display-name>
 
-	<!-- Jersey configuration. For additional configuration see the class SnomedStarterKitServerApplication -->
+	<!-- Jersey configuration. For additional configuration see the class TerminologyTransformerServerApplication -->
 	<servlet>
 		<servlet-name>jersey</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
