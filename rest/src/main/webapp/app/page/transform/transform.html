@@ -1,0 +1,40 @@
+<div class="row">
+
+	<div class="col-md-1 col-xs-0"></div>
+	<div class="col-md-11 col-xs-12">
+
+		<div class="row">
+			<div class="col-md-3">
+				<!-- Transform view -->
+				<h3>Transform!</h3>
+
+				<textarea ng-model="inputStr" style="width: 100%; min-height: 100px"></textarea>
+				<hr>
+				Terminology: <select
+					ng-init="terminologyObj.value = terminologyObj.values[1]"
+					ng-options="terminology as terminology.name for terminology in terminologyObj.values"
+					ng-model="terminologyObj.value"></select>
+				<button class="btn btn-default btn-primary" style="align: center"
+					ng-click="transform(inputStr, selectedTerminology)">Transform!</button>
+			</div>
+			<div class="col-md-9">
+				<table ng-table="tpResults" class="table">
+					<tr ng-repeat="item in $data">
+						<td data-title="'Score'" sortable="'quality'"
+							filter="{quality : 'number'}">{{item.quality}}</td>
+						<td data-title="'Terminology'" sortable="'terminology'"
+							filter="{terminology : 'text'}">{{item.terminology}}</td>
+						<td data-title="'Version'" sortable="'version'"
+							filter="{version : 'text'}">{{item.version}}</td>
+						<td data-title="'ID'" sortable="'terminologyId'"
+							filter="{terminologyId : 'text'}">{{item.terminologyId}}</td>
+						<td data-title="'Name'" sortable="'value'"
+							filter="{value : 'text'}">{{item.value}}</td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+</div>

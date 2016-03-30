@@ -1,0 +1,156 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Module Metadata -->
+  <parent>
+    <groupId>com.wcinformatics.tt</groupId>
+    <artifactId>tt-parent</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <artifactId>tt-integration-test</artifactId>
+  <name>WCI Terminology Transformer Project integration test module</name>
+  <description>Performs integration tests given a test configuration and a running service.</description>
+
+  <!-- Avoid running integration tests by default -->
+  <properties>
+    <skipTests>true</skipTests>
+  </properties>
+
+  <!-- Declare Project Dependency Versions -->
+  <dependencies>
+
+    <!-- Dependencies -->
+    <dependency>
+      <groupId>com.wcinformatics.tt</groupId>
+      <artifactId>tt-rest-client</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.wcinformatics.tt</groupId>
+      <artifactId>tt-rest</artifactId>
+      <classifier>classes</classifier>
+      <type>jar</type>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Add src/main/resources to the classpath -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <additionalClasspathElements>
+            <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+          </additionalClasspathElements>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <profiles>
+    <!-- REST integration tests -->
+    <profile>
+      <id>rest</id>
+      <build>
+        <plugins>
+          <!-- Add src/main/resources to the classpath -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/com/wci/tt/test/rest/*Test.java</include>
+              </includes>
+              <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+              </additionalClasspathElements>
+              <skipTests>${skipTests}</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Jpa integration tests -->
+    <profile>
+      <id>jpa</id>
+      <build>
+        <plugins>
+          <!-- Add src/main/resources to the classpath -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/com/wci/tt/test/jpa/DefaultSpelling*Test.java</include>
+              </includes>
+              <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+              </additionalClasspathElements>
+              <skipTests>${skipTests}</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- MOJO integration tests -->
+    <profile>
+      <id>mojo</id>
+      <build>
+        <plugins>
+          <!-- Add src/main/resources to the classpath -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/com/wci/tt/test/mojo/*Test.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/com/wci/tt/test/mojo/ResetDevDatabase.java
+                </exclude>
+              </excludes>
+              <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+              </additionalClasspathElements>
+              <skipTests>${skipTests}</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Reset dev database to stock conditions -->
+    <profile>
+      <id>reset</id>
+      <build>
+        <plugins>
+          <!-- Add src/main/resources to the classpath -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/com/wci/tt/test/mojo/ResetDevDatabase.java</include>
+              </includes>
+              <additionalClasspathElements>
+                <additionalClasspathElement>src/main/resources</additionalClasspathElement>
+              </additionalClasspathElements>
+              <skipTests>${skipTests}</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
+</project>

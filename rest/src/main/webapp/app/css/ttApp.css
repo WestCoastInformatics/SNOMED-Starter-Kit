@@ -1,0 +1,32 @@
+/*
+  Terminology Transformer, West Coast Informatics, LLC.
+  Application styling and overrides
+*/
+
+/* Override ng-table highlighting of sorted columns */
+th.sortable.sort-asc {
+    background-color: transparent !important;
+}
+th.sortable.sort-desc {
+    background-color: transparent !important;
+}
+
+/* Glass Panel and Message */
+.top-layer {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	top: 0;
+	left: 0;
+	opacity: 0.5;
+	z-index: 10000;
+	cursor: wait;
+	background-color: #FFFFFF;
+}
+
+.top-layer-message {
+	z-index: 401;
+	width: 450px;
+}

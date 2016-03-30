@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <!-- use transaction-type RESOURCE_LOCAL because we do not have a container -->
+  <persistence-unit name="TermServiceDS" transaction-type="RESOURCE_LOCAL">
+
+    <!-- JPA persistence provider. -->
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <!-- This is a hack to get all entity objects from TermServer
+    NOTE: if a class gets added to term server, it has to get added here to work  -->
+    <!-- TODO: could make this based on a dynamically downloaded .jar file, but that 
+      could get complicated, use dependency:get of dependency plugin for that -->
+    <class>com.wci.umls.server.jpa.content.AtomJpa</class>
+    <class>com.wci.umls.server.jpa.content.AtomRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.AtomSubsetJpa</class>
+    <class>com.wci.umls.server.jpa.content.AtomSubsetMemberJpa</class>
+    <class>com.wci.umls.server.jpa.content.AttributeJpa</class>
+    <class>com.wci.umls.server.jpa.content.CodeJpa</class>
+    <class>com.wci.umls.server.jpa.content.CodeRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.CodeTransitiveRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.CodeTreePositionJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptSubsetJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptSubsetMemberJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptTransitiveRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.ConceptTreePositionJpa</class>
+    <class>com.wci.umls.server.jpa.content.DefinitionJpa</class>
+    <class>com.wci.umls.server.jpa.content.DescriptorJpa</class>
+    <class>com.wci.umls.server.jpa.content.DescriptorRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.DescriptorTransitiveRelationshipJpa</class>
+    <class>com.wci.umls.server.jpa.content.DescriptorTreePositionJpa</class>
+    <class>com.wci.umls.server.jpa.content.GeneralConceptAxiomJpa</class>
+    <class>com.wci.umls.server.jpa.content.LexicalClassJpa</class>
+    <class>com.wci.umls.server.jpa.content.SemanticTypeComponentJpa</class>
+    <class>com.wci.umls.server.jpa.content.StringClassJpa</class>
+    <class>com.wci.umls.server.jpa.helpers.PrecedenceListJpa</class>
+    <class>com.wci.umls.server.jpa.meta.AdditionalRelationshipTypeJpa</class>
+    <class>com.wci.umls.server.jpa.meta.AttributeNameJpa</class>
+    <class>com.wci.umls.server.jpa.meta.CitationJpa</class>
+    <class>com.wci.umls.server.jpa.meta.ContactInfoJpa</class>
+    <class>com.wci.umls.server.jpa.meta.GeneralMetadataEntryJpa</class>
+    <class>com.wci.umls.server.jpa.meta.LabelSetJpa</class>
+    <class>com.wci.umls.server.jpa.meta.LanguageJpa</class>
+    <class>com.wci.umls.server.jpa.meta.PropertyChainJpa</class>
+    <class>com.wci.umls.server.jpa.meta.RelationshipTypeJpa</class>
+    <class>com.wci.umls.server.jpa.meta.RootTerminologyJpa</class>
+    <class>com.wci.umls.server.jpa.meta.SemanticTypeJpa</class>
+    <class>com.wci.umls.server.jpa.meta.TerminologyJpa</class>
+    <class>com.wci.umls.server.jpa.meta.TermTypeJpa</class>
+    <class>com.wci.umls.server.jpa.ProjectJpa</class>
+    <class>com.wci.umls.server.jpa.ReleaseInfoJpa</class>
+    <class>com.wci.umls.server.jpa.ReleasePropertyJpa</class>
+    <class>com.wci.umls.server.jpa.UserJpa</class>
+    <class>com.wci.umls.server.jpa.UserPreferencesJpa</class>
+
+  </persistence-unit>
+</persistence>
