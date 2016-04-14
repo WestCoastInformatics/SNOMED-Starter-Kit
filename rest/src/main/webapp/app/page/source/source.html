@@ -1,0 +1,97 @@
+<style>
+li {
+	list-style-type: none;
+}
+
+ul {
+	list-style-position: inside;
+}
+</style>
+
+<div class="row" ng-if="uploader">
+  <div class="col-md-4">
+    <h4>SNOMEDCT Starter Kit</h4>
+
+    <p>Welcome to the SNOMEDCT Starter Kit. Use this page to select release
+      files, load SNOMEDCT Snapshot and Delta files into your database, or
+      remove SNOMEDCT from your installation.</p>
+    <p>To upload Snapshot or Delta data, select a compressed (zip) file
+      containing the standard RF2 directory structure, e.g.:
+    <ul style="padding-left: 0px;">
+      <li>SNOMEDCT.zip
+
+        <ul>
+          <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
+
+          
+          <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Snapshot
+            <ul>
+              <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Refset
+                <ul>
+                  <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Content</li>
+                  <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Language</li>
+                  <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Map</li>
+                  <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Metadata</li>
+                </ul>
+              <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Terminology</li>
+            </ul></li>
+          <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
+
+
+
+
+
+
+
+
+
+
+          
+        </ul>
+      </li>
+    </ul>
+
+
+
+  </div>
+  <div class="col-md-8" ng-show="!currentSourceData">
+
+    <h4 ng-show="!isSnomedLoaded">Step 1: Upload SNOMEDCT Snapshot Files</h4>
+    <h4 ng-show="isSnomedLoaded">Step 1: Upload SNOMEDCT Delta Files</h4>
+
+    <input type="file" nv-file-select="" uploader="uploader" />
+    
+    <hr>
+    <div>
+      <p>To remove SNOMEDCT from your database, click the button below</p>
+      <button class="btn btn-danger btn-sm" style="margin-left: 20px;"
+        ng-click="removeData()">
+        <span class="glyphicon glyphicon-trash"></span> &nbsp;Remove SNOMEDCT
+      </button>
+    </div>
+</div>
+<div class="col-md-8" ng-show="currentSourceData.status === 'NEW'">
+    <h4>Step 2: Review Files</h4>
+    <div class="pull-right">
+      <input type="checkbox" ng-model="showFullPath"> Show Full Paths
+    </div>
+    <table ng-table="tpSourceDataFiles" class="table"
+      ng-show="currentSourceData.sourceDataFiles.length > 0">
+      <tr ng-repeat="item in $data">
+        <td data-title="'Name'" sortable="'name'" stye="word-break: break-all;">{{showFullPath
+          ? getFilePath(item) : item.name}}</td>
+        <td data-title="'Size'" sortable="'size'">{{item.size/1024/1024|number:2
+          }} MB</td>
+      </tr>
+    </table>
+    
+    <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
+        ng-click="loadData()">
+        <span class="glyphicon glyphicon-play"></span> &nbsp;Load
+      </button>
+</div>
+<div class="col-md-8" ng-show="currentSourceData && currentSourceData.status != 'NEW'">
+    <h4>Step 3: Loading SNOMEDCT Data</h4>
+
+  </div>
+</div>

@@ -1,1 +1,0 @@
-This folder is for SNOMED Starter Kit services and factories
