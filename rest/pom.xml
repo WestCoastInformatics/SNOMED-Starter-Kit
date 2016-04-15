@@ -17,6 +17,8 @@
   <description>REST service implementation.</description>
 
   <properties>
+    <run.config.label>ssk</run.config.label>
+
     <!-- Specify the config artifact parameters -->
     <config.groupId>com.wcinformatics.ssk</config.groupId>
     <config.artifactId>ssk-config-dev-windows</config.artifactId>
@@ -32,20 +34,6 @@
   </properties>
 
   <dependencies>
-
-    <!-- Model interfaces. -->
-    <dependency>
-      <groupId>com.wcinformatics.ssk</groupId>
-      <artifactId>ssk-jpa-model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.wcinformatics.ssk</groupId>
-      <artifactId>ssk-jpa-services</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.wcinformatics.ssk</groupId>
-      <artifactId>ssk-model</artifactId>
-    </dependency>
 
     <!-- Term server dependencies -->
     <dependency>
@@ -136,16 +124,22 @@
           </execution>
         </executions>
       </plugin>
-      
-       
+
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-         <overlays>
+          <overlays>
             <overlay>
               <groupId>com.wcinformatics.umls.server</groupId>
               <artifactId>term-server-rest</artifactId>
+              <type>war</type>
+              <excludes>
+                <exclude>swagger.html</exclude>
+                <exclude>**/TermServerApplication*class</exclude>
+                <exclude>**/label.prop</exclude>
+              </excludes>
             </overlay>
           </overlays>
         </configuration>

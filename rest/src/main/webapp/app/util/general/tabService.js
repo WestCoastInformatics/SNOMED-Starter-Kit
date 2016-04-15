@@ -6,16 +6,16 @@ tsApp.service('tabService', [ '$location', 'utilService', 'gpService', 'security
     this.tabs = [ {
       link : 'source',
       label : 'Sources',
-      role : 'USER'
+      role : null
 
     }, {
       link : 'content',
       label : 'Content',
-      role : false
+      role : null
     }, {
       link : 'metadata',
       label : 'Metadata',
-      role : false
+      role : null
     }];
 
     // the selected tab

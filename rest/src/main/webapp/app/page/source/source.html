@@ -22,7 +22,6 @@ ul {
 
         <ul>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
-
           
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Snapshot
             <ul>
@@ -36,42 +35,31 @@ ul {
               <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Terminology</li>
             </ul></li>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
-
-
-
-
-
-
-
-
-
-
           
         </ul>
       </li>
     </ul>
+  </div>
+  <div class="col-md-8"
+    ng-show="!isProcessRunning && !currentSourceData && !previousSourceData">
+
+    <div ng-show="isSnomedLoaded" class="alert alert-info">SNOMEDCT is
+      loaded in your database! Click the Content tab to browse and search
+      SNOMEDCT.</div>
+
+    <h4 ng-show="!isSnomedLoaded">Upload SNOMEDCT Snapshot Files</h4>
+    <h4 ng-show="isSnomedLoaded">Upload SNOMEDCT Delta Files</h4>
+
+    <input type="file" nv-file-select="" uploader="uploader" />
 
 
 
   </div>
-  <div class="col-md-8" ng-show="!currentSourceData">
-
-    <h4 ng-show="!isSnomedLoaded">Step 1: Upload SNOMEDCT Snapshot Files</h4>
-    <h4 ng-show="isSnomedLoaded">Step 1: Upload SNOMEDCT Delta Files</h4>
-
-    <input type="file" nv-file-select="" uploader="uploader" />
-    
-    <hr>
-    <div>
-      <p>To remove SNOMEDCT from your database, click the button below</p>
-      <button class="btn btn-danger btn-sm" style="margin-left: 20px;"
-        ng-click="removeData()">
-        <span class="glyphicon glyphicon-trash"></span> &nbsp;Remove SNOMEDCT
-      </button>
-    </div>
-</div>
-<div class="col-md-8" ng-show="currentSourceData.status === 'NEW'">
-    <h4>Step 2: Review Files</h4>
+  <div class="col-md-8"
+    ng-show="!isProcessRunning && currentSourceData && (!currentSourceData.status || currentSourceData.status === 'NEW')">
+    <h4>Review Files</h4>
+    <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
+      ng-click="loadData()">Load</button>
     <div class="pull-right">
       <input type="checkbox" ng-model="showFullPath"> Show Full Paths
     </div>
@@ -84,14 +72,37 @@ ul {
           }} MB</td>
       </tr>
     </table>
-    
-    <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
-        ng-click="loadData()">
-        <span class="glyphicon glyphicon-play"></span> &nbsp;Load
-      </button>
-</div>
-<div class="col-md-8" ng-show="currentSourceData && currentSourceData.status != 'NEW'">
-    <h4>Step 3: Loading SNOMEDCT Data</h4>
+  </div>
+  <div class="col-md-8" ng-show="isProcessRunning">
+    <h4>Activity Log: {{getHumanText(polls[currentSourceData.id].status)}}</h4>
+    <div id="activityLog" class="well well-md"
+      style="overflow-y: auto; max-height: 350px;">
+      <span ng-show="!polls[currentSourceData.id].logEntries"> Retrieving
+        activity log.... </span>
+      <pre>{{polls[currentSourceData.id].logEntries}}</pre>
+    </div>
+  </div>
+  <div class="col-md-8" ng-show="previousSourceData">
+    <h4>Problem Detected: {{getHumanText(previousSourceData.status)}}</h4>
+    <p>The last load either failed or was cancelled. Click the button below
+      to clear the database and begin again.</p>
 
+    <button class="btn btn-primary btn-md" ng-click="destroy()">Clear
+      Database</button>
+    <hr>
+    <p>The source files used for the failed load are shown below</p>
+    <div class="pull-right">
+      <input type="checkbox" ng-model="showFullPath"> Show Full Paths
+    </div>
+    <table ng-table="tpSourceDataFiles" class="table"
+      ng-show="previousSourceData.sourceDataFiles.length > 0">
+      <tr ng-repeat="item in $data">
+        <td data-title="'Name'" sortable="'name'" stye="word-break: break-all;">{{showFullPath
+          ? getFilePath(item) : item.name}}</td>
+        <td data-title="'Size'" sortable="'size'">{{item.size/1024/1024|number:2
+          }} MB</td>
+      </tr>
+    </table>
   </div>
 </div>
+

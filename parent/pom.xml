@@ -56,7 +56,8 @@
   </scm>
 
   <properties>
-    <term.server.version>1.2.1</term.server.version>
+    
+    <term.server.version>1.3.0-SNAPSHOT</term.server.version>
     <!-- Set default maven settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -74,26 +75,7 @@
     <dependencies>
 
       <!-- Dependencies. -->
-      <dependency>
-        <groupId>com.wcinformatics.ssk</groupId>
-        <artifactId>ssk-model</artifactId>
-        <version>${releaseVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.wcinformatics.ssk</groupId>
-        <artifactId>ssk-services</artifactId>
-        <version>${releaseVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.wcinformatics.ssk</groupId>
-        <artifactId>ssk-jpa-model</artifactId>
-        <version>${releaseVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.wcinformatics.ssk</groupId>
-        <artifactId>ssk-jpa-services</artifactId>
-        <version>${releaseVersion}</version>
-      </dependency>
+      
       <dependency>
         <groupId>com.wcinformatics.ssk</groupId>
         <artifactId>ssk-rest</artifactId>
@@ -101,12 +83,7 @@
         <classifier>classes</classifier>
         <type>jar</type>
       </dependency>
-      <dependency>
-        <groupId>com.wcinformatics.ssk</groupId>
-        <artifactId>ssk-rest-client</artifactId>
-        <version>${releaseVersion}</version>
-      </dependency>
-
+      
       <!-- Term server dependencies. -->
       <dependency>
         <groupId>com.wcinformatics.umls.server</groupId>
