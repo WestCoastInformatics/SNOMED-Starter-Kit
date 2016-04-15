@@ -229,7 +229,7 @@ tsApp
 
         $scope.polls[sourceData.id].poll = $interval(function() {
 
-          console.debug('Polling', $scope.polls[sourceData.id]);
+          //console.debug('Polling', $scope.polls[sourceData.id]);
 
           // get the source data by id (suppress glass pane)
           sourceDataService.getSourceData(sourceData.id, true).then(function(polledSourceData) {
@@ -273,6 +273,7 @@ tsApp
           console.error('Cannot update source data from poll results');
           return;
         }
+        console.debug('updating source data', polledSourceData);
 
         // update poll status from data
         $scope.polls[polledSourceData.id].status = polledSourceData.status;
@@ -286,7 +287,7 @@ tsApp
           $scope.getSourceData();
           break;
         case 'LOADING_FAILED':
-          utilService.handleError('Terminology load failed for ' + polledSourceData.terminology
+          utilService.setError('Terminology load failed for ' + polledSourceData.terminology
             + ', ' + polledSourceData.version);
           $scope.stopPolling(polledSourceData);
           $scope.getSourceData();
@@ -298,7 +299,7 @@ tsApp
           $scope.getSourceData();
           break;
         case 'REMOVAL_FAILED':
-          utilService.handleError('Terminology removal failed for ' + polledSourceData.terminology
+          utilService.setError('Terminology removal failed for ' + polledSourceData.terminology
             + ', ' + polledSourceData.version);
           $scope.stopPolling(polledSourceData);
           $scope.getSourceData();
