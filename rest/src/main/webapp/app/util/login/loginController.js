@@ -1,15 +1,21 @@
 
-
 // Login controller
-tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService', 'gpService',
-  'utilService', 'projectService', 'configureService',
-  function($scope, $http, $location, securityService, gpService, utilService, projectService, configureService) {
+tsApp.controller('LoginCtrl', [
+  '$scope',
+  '$http',
+  '$location',
+  'securityService',
+  'gpService',
+  'utilService',
+  'projectService',
+  'configureService',
+  function($scope, $http, $location, securityService, gpService, utilService, projectService,
+    configureService) {
     console.debug('configure LoginCtrl');
 
-    
     // Login function
     $scope.login = function(name, password) {
- 
+
       // login
       gpService.increment();
       return $http({
@@ -27,13 +33,13 @@ tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService
 
         // set request header authorization and reroute
         $http.defaults.headers.common.Authorization = response.data.authToken;
-        
+
         metadataService.initTerminologies().then(function(response) {
           console.debug('login terminologies response', response.count, resopnse);
           if (response && response.count > 0) {
-            $location.path('/content');
+            setSelectedTabByLabel('Content');
           } else {
-            $location.path('/source');
+            setSelectedTabByLabel('Sources');
           }
         })
         gpService.decrement();
@@ -50,11 +56,11 @@ tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService
     $scope.logout = function() {
       securityService.logout();
     };
-    
+
     //
     // Initialization: Check that application is configured
     //
-    
+
     $scope.initialize = function() {
       // Clear user info
       securityService.clearUser();

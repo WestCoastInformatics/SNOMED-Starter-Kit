@@ -18,9 +18,11 @@ tsApp.controller('TabCtrl', [ '$scope', '$routeParams', 'securityService', 'tabS
     // sets the selected tab by label
     // to be called by controllers when their
     // respective tab is selected
+    
     this.setSelectedTabByLabel = function(label) {
+      console.debug('setting tab by label', label, this.tabs);
       for (var i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i].label === label && this.tabs[i].enabled) {
+        if (this.tabs[i].label === label) {
           this.selectedTab = this.tabs[i];
           break;
         }

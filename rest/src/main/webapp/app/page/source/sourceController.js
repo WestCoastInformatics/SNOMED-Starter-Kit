@@ -8,15 +8,14 @@ tsApp
       console.debug('configure SourceCtrl');
 
       // Handle resetting tabs on "back" button
-      if (tabService.selectedTab.label != 'Source') {
-        tabService.setSelectedTabByLabel('Source');
+      if (tabService.selectedTab.label != 'Sources') {
+        tabService.setSelectedTabByLabel('Sources');
       }
 
       // 
       // Local variables
       // 
       $scope.isSnomedLoaded = null;
-      $scope.previousSourceData = null;
       $scope.currentSourceData = null;
       $scope.polls = {};
 
@@ -44,11 +43,14 @@ tsApp
       //
       // start load and initiate polling
       $scope.loadData = function() {
+        if (!$scope.currentSourceData) {
+          console.error('no source data to load data for');
+          return;
+        }
         sourceDataService.loadFromSourceData($scope.currentSourceData).then(function() {
           $scope.startPolling($scope.currentSourceData);
         });
-        $scope.startPolling($scope.currentSourceData);
-        $scope.isProcessRunning = true;
+        $scope.currentSourceData.status = 'LOADING';
       };
 
       $scope.cancel = function() {
@@ -56,17 +58,19 @@ tsApp
           $scope.getSourceData();
         });
       };
-      
+
       $scope.destroy = function() {
         configureService.destroy().then(function() {
           $scope.isSnomedLoaded = false;
-          $scope.previousSourceData = false;
-          $scope.currentSourceData = false;
+          $scope.currentSourceData = null;
+
+          // factory reset and users cleared, force relogin
+          $location.path('/login');
         });
       }
-      
+
       // TODO Add remove/clear
-      
+
       // TODO watch for debug, remove later
       $scope.$watch('currentSourceData', function() {
         console.debug('current source data', $scope.currentSourceData);
@@ -75,14 +79,10 @@ tsApp
       //
       // Utility Functions
       //
-      
+
       $scope.refreshFilesTable = function() {
         var files = [];
-        if ($scope.previousSourceData) {
-          files = $scope.previousSourceData.sourceDataFiles;
-        } else if ($scope.currentSourceData) {
-          files = $scope.currentSourceData.sourceDataFiles;
-        }
+        files = $scope.currentSourceData.sourceDataFiles;
         console.debug(files);
 
         $scope.tpSourceDataFiles = new NgTableParams({}, {
@@ -90,6 +90,28 @@ tsApp
           counts : []
         // hides page sizes
         });
+      }
+      
+      $scope.setSourceData = function(sourceData) {
+        $scope.currentSourceData = sourceData;
+        if (!$scope.currentSourceData) {
+          console.error('Attempted to set null source data');
+          return;
+        }
+        if (!$scope.currentSourceData.status || $scope.currentSourceData.status === 'NEW') {
+          console.debug('New status detected')
+        } else if ($scope.currentSourceData.status === 'LOADING') {
+          console.debug('Loading status detected');
+          $scope.startPolling($scope.currentSourceData);
+        } else if ($scope.currentSourceData.status === 'LOADING_COMPLETE') {
+          console.debug('Loading complete status detected')
+          $scope.isSnomedLoaded = true;
+        } else {
+          console.debug('Non-new, non-loading status detected');
+        }
+        $scope.refreshFilesTable();
+
+      
       }
 
       $scope.getSourceData = function() {
@@ -105,34 +127,15 @@ tsApp
               var sds = response.sourceDatas.sort(function(a, b) {
                 return a.lastModified < b.lastModified;
               });
-              var sd = sds[0];
-              if (!sd.status || sd.status === 'NEW') {
-                console.debug('New status detected')
-                $scope.currentSourceData = sd;
-              }
-              else if (sd.status === 'LOADING') {
-                console.debug('Loading status detected');
-                $scope.isProcessRunning = true;
-                $scope.currentSourceData = sd;
-                $scope.previousSourceData = null;
-                $scope.startPolling($scope.currentSourceData);
-              } else {
-                console.debug('Non-new, non-loading status detected')
-                $scope.currentSourceData = null;
-                $scope.previousSourceData = sd;
-              }
-              $scope.refreshFilesTable();
-              
+              $scope.setSourceData(sds[0]);
             }
+              
           })
         } else {
 
           sourceDataService.getSourceData($scope.currentSourceData.id).then(function(response) {
-            $scope.currentSourceData = response;
+            $scope.setSourceData(response);
 
-            console.debug($scope.currentSourceData);
-            $scope.refreshFilesTable();
-            
           });
         }
       }
@@ -236,6 +239,7 @@ tsApp
             if (polledSourceData) {
               $scope.updateSourceDataFromPoll(polledSourceData);
             } else {
+              console.debug('Failed to retrieve polled source data');
               $scope.stopPolling(sourceData);
             }
           });
@@ -254,8 +258,12 @@ tsApp
       };
 
       $scope.stopPolling = function(sourceData) {
-        console.log('Stop polling for source data ' + sourceData.id + ': ' + sourceData.name);
-        $interval.cancel($scope.polls[sourceData.id].poll);
+        console.log('Stop polling for source data ' + sourceData.id + ': ' + sourceData.name,
+          $scope.polls);
+        if ($scope.polls.hasOwnProperty(sourceData.id)) {
+
+          $interval.cancel($scope.polls[sourceData.id].poll);
+        }
         delete $scope.polls[sourceData.id];
       };
 
@@ -265,6 +273,7 @@ tsApp
           if ($scope.polls.hasOwnProperty(key)) {
             $interval.cancel($scope.polls[key].poll);
           }
+          delete $scope.polls[sourceData.id];
         }
       });
 
@@ -275,9 +284,6 @@ tsApp
         }
         console.debug('updating source data', polledSourceData);
 
-        // update poll status from data
-        $scope.polls[polledSourceData.id].status = polledSourceData.status;
-
         // perform actions nased on newly polled status
         switch (polledSourceData.status) {
         case 'LOADING_COMPLETE':
@@ -287,8 +293,8 @@ tsApp
           $scope.getSourceData();
           break;
         case 'LOADING_FAILED':
-          utilService.setError('Terminology load failed for ' + polledSourceData.terminology
-            + ', ' + polledSourceData.version);
+          utilService.setError('Terminology load failed for ' + polledSourceData.terminology + ', '
+            + polledSourceData.version);
           $scope.stopPolling(polledSourceData);
           $scope.getSourceData();
           break;
@@ -305,8 +311,12 @@ tsApp
           $scope.getSourceData();
           break;
         default:
-          // do nothing
+          // update poll status from data
+          if ($scope.polls.hasOwnProperty(polledSourceData.id)) {
+            $scope.polls[polledSourceData.id].status = polledSourceData.status;
+          }
         }
+
       };
 
     });

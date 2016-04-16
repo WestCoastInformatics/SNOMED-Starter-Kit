@@ -2,21 +2,14 @@
 
 // Login controller
 tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService', 'gpService',
-  'utilService', 'projectService', 'configureService',
-  function($scope, $http, $location, securityService, gpService, utilService, projectService, configureService) {
+  'utilService', 'projectService', 'configureService', 'metadataService',
+  function($scope, $http, $location, securityService, gpService, utilService, projectService, configureService, metadataService) {
     console.debug('configure LoginCtrl');
 
     
     // Login function
     $scope.login = function(name, password) {
-      if (!name) {
-        alert("You must specify a user name");
-        return;
-      } else if (!password) {
-        alert("You must specify a password");
-        return;
-      }
-
+      console.debug('login called');
       // login
       gpService.increment();
       return $http({
@@ -34,18 +27,17 @@ tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService
 
         // set request header authorization and reroute
         $http.defaults.headers.common.Authorization = response.data.authToken;
-        projectService.getUserHasAnyRole();
-        if (response.data.userPreferences && response.data.userPreferences.lastTab) {
-          $location.path(response.data.userPreferences.lastTab);
-        } else {
-          // if no previous preferences, go to source for initial file upload
-          if (response.data.applicationRole == 'VIEWER') {
-            $location.path("/content");
+        metadataService.initTerminologies().then(function(response) {
+          console.debug('SNOMEDCT load detected? ', response.count > 0, response);
+          if (response.count > 0) {
+            $location.path('/content');
           } else {
-            $location.path("/source");
+            $location.path('/source');
           }
-
-        }
+        }, function(error) {
+          utilService.handleError(response);
+          $location.path('/content');
+        })
         gpService.decrement();
       },
 
@@ -71,6 +63,10 @@ tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService
 
       // Declare the user
       $scope.user = securityService.getUser();
+      
+   // TODO Temporarily hardwired to ensure user added in service layer
+      $scope.login('admin', 'admin');
+      
 
     }
     configureService.isConfigured().then(function(isConfigured) {
@@ -79,7 +75,7 @@ tsApp.controller('LoginCtrl', [ '$scope', '$http', '$location', 'securityService
         console.debug('routing to configure');
         $location.path('/configure');
       } else {
-        //$scope.initialize();
+        $scope.initialize();
       }
     });
 

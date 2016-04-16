@@ -22,6 +22,7 @@ ul {
 
         <ul>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
+
           
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Snapshot
             <ul>
@@ -35,13 +36,13 @@ ul {
               <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Terminology</li>
             </ul></li>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
+
           
         </ul>
       </li>
     </ul>
   </div>
-  <div class="col-md-8"
-    ng-show="!isProcessRunning && !currentSourceData && !previousSourceData">
+  <div class="col-md-8" ng-show="!currentSourceData">
 
     <div ng-show="isSnomedLoaded" class="alert alert-info">SNOMEDCT is
       loaded in your database! Click the Content tab to browse and search
@@ -56,7 +57,7 @@ ul {
 
   </div>
   <div class="col-md-8"
-    ng-show="!isProcessRunning && currentSourceData && (!currentSourceData.status || currentSourceData.status === 'NEW')">
+    ng-show="currentSourceData && (!currentSourceData.status || currentSourceData.status === 'NEW')">
     <h4>Review Files</h4>
     <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
       ng-click="loadData()">Load</button>
@@ -73,7 +74,7 @@ ul {
       </tr>
     </table>
   </div>
-  <div class="col-md-8" ng-show="isProcessRunning">
+  <div class="col-md-8" ng-show="currentSourceData.status === 'LOADING'">
     <h4>Activity Log: {{getHumanText(polls[currentSourceData.id].status)}}</h4>
     <div id="activityLog" class="well well-md"
       style="overflow-y: auto; max-height: 350px;">
@@ -82,12 +83,15 @@ ul {
       <pre>{{polls[currentSourceData.id].logEntries}}</pre>
     </div>
   </div>
-  <div class="col-md-8" ng-show="previousSourceData">
-    <h4>Problem Detected: {{getHumanText(previousSourceData.status)}}</h4>
-    <p>The last load either failed or was cancelled. Click the button below
-      to clear the database and begin again.</p>
+  <div class="col-md-8" ng-show="currentSourceData.status === 'LOADING_FAILED'">
+    <h4>Problem Detected: {{getHumanText(currentSourceData.status)}}</h4>
+    <p>The last load either failed or was cancelled. Click one of the
+      buttons below to attempt reloading or to clear the database and try again.</p>
 
-    <button class="btn btn-primary btn-md" ng-click="destroy()">Clear
+    <button class="btn btn-primary btn-md"
+      confirm="Are you sure you want to clear your database?"
+      ng-click="loadData()">Attempt Reload</button>
+    <button class="btn btn-danger btn-md pull-right" ng-click="destroy()">Clear
       Database</button>
     <hr>
     <p>The source files used for the failed load are shown below</p>
@@ -95,7 +99,7 @@ ul {
       <input type="checkbox" ng-model="showFullPath"> Show Full Paths
     </div>
     <table ng-table="tpSourceDataFiles" class="table"
-      ng-show="previousSourceData.sourceDataFiles.length > 0">
+      ng-show="currentSourceData.sourceDataFiles.length > 0">
       <tr ng-repeat="item in $data">
         <td data-title="'Name'" sortable="'name'" stye="word-break: break-all;">{{showFullPath
           ? getFilePath(item) : item.name}}</td>
