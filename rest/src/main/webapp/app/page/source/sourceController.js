@@ -59,14 +59,32 @@ tsApp
         });
       };
 
+      // destroy the database
       $scope.destroy = function() {
-        configureService.destroy().then(function() {
-          $scope.isSnomedLoaded = false;
-          $scope.sourceData = null;
 
-          // factory reset and users cleared, force relogin
-          $location.path('/login');
+        // first clear all source datas
+        // intended to allow detection of discrepancies where
+        // a terminology is loaded but no source datas exist
+        // (i.e. incomplete, failed, or cancelled database clear
+        sourceDataService.getSourceDatas().then(function(sourceDatas) {
+          var delCt = 0;
+          angular.forEach(sourceDatas, function(sourceData) {
+            sourceDataService.removeSourceData(sourceData).then(function() {
+              
+              // after last source data is deleted, destroy and recreate the database
+              if (++delCt == sourceDatas.length) {
+                configureService.destroy().then(function() {
+                  $scope.isSnomedLoaded = false;
+                  $scope.sourceData = null;
+
+                  // factory reset and users cleared, force relogin
+                  $location.path('/login');
+                });
+              }
+            });
+          });
         });
+
       }
 
       // TODO Add remove/clear
@@ -89,6 +107,9 @@ tsApp
             $scope.sourceData = null;
           });
         }
+        angular.forEach(uploader.queue, function(item) {
+          item.remove();
+        });
       };
 
       $scope.refreshFilesTable = function() {
@@ -143,6 +164,13 @@ tsApp
                 return a.lastModified < b.lastModified;
               });
               $scope.setSourceData(sds[0]);
+            }
+
+            // no source datas + terminology loaded -> database fail
+            else if ($scope.isSnomedLoaded) {
+              $scope.sourceData = {
+                status : 'BAD_DATABSE'
+              };
             }
 
           })

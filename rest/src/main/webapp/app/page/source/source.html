@@ -23,6 +23,8 @@ ul {
         <ul>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
 
+
+
           
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Snapshot
             <ul>
@@ -36,6 +38,8 @@ ul {
               <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;Terminology</li>
             </ul></li>
           <li><i class="glyphicon glyphicon-folder-open"></i>&nbsp;&nbsp;...
+
+
 
           
         </ul>
@@ -60,7 +64,11 @@ ul {
     ng-show="sourceData && (!sourceData.status || sourceData.status === 'NEW')">
     <h4>Review Files</h4>
     <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
-      ng-click="loadData()">Load</button>
+      ng-click="loadData()" uib-tooltip="Begin loading data">Load</button>
+    <button class="btn btn-warning btn-sm" style="margin-left: 20px;"
+      ng-click="resetSourceData()"
+      uib-tooltip="Delete uploaded files and choose another ZIP file">Clear</button>
+
     <div class="pull-right">
       <input type="checkbox" ng-model="showFullPath"> Show Full Paths
     </div>
@@ -84,7 +92,9 @@ ul {
     </div>
     <button
       confirm="Interrupting load may require clearing database and reloading Snapshot data. Proceed anyway?"
-      class="btn btn-warning btn-md" ng-click="cancel()">Cancel</button>
+      class="btn btn-warning btn-md"
+      uib-tooltip="Cancel loading data. May require clearing database and reloading from scratch."
+      ng-click="cancel()">Cancel</button>
 
   </div>
   <div class="col-md-8" ng-show="sourceData.status === 'LOADING_FAILED'">
@@ -111,6 +121,18 @@ ul {
           }} MB</td>
       </tr>
     </table>
+  </div>
+
+  <div class="col-md-8" ng-show="sourceData.status === 'BAD_DATABASE'">
+    <h4>Problem Detected: {{getHumanText(sourceData.status)}}</h4>
+    <p>The database is in an unexpected state. The integrity of previously
+      uploaded files cannot be guaranteed. Click the button to clear and reset
+      the database, then start fresh.</p>
+
+   
+    <button class="btn btn-danger btn-md" ng-click="destroy()">Clear
+      Database</button>
+    
   </div>
 </div>
 
