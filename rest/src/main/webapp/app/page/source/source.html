@@ -42,7 +42,7 @@ ul {
       </li>
     </ul>
   </div>
-  <div class="col-md-8" ng-show="!currentSourceData">
+  <div class="col-md-8" ng-show="!sourceData">
 
     <div ng-show="isSnomedLoaded" class="alert alert-info">SNOMEDCT is
       loaded in your database! Click the Content tab to browse and search
@@ -57,7 +57,7 @@ ul {
 
   </div>
   <div class="col-md-8"
-    ng-show="currentSourceData && (!currentSourceData.status || currentSourceData.status === 'NEW')">
+    ng-show="sourceData && (!sourceData.status || sourceData.status === 'NEW')">
     <h4>Review Files</h4>
     <button class="btn btn-primary btn-sm" style="margin-left: 20px;"
       ng-click="loadData()">Load</button>
@@ -65,7 +65,7 @@ ul {
       <input type="checkbox" ng-model="showFullPath"> Show Full Paths
     </div>
     <table ng-table="tpSourceDataFiles" class="table"
-      ng-show="currentSourceData.sourceDataFiles.length > 0">
+      ng-show="sourceData.sourceDataFiles.length > 0">
       <tr ng-repeat="item in $data">
         <td data-title="'Name'" sortable="'name'" stye="word-break: break-all;">{{showFullPath
           ? getFilePath(item) : item.name}}</td>
@@ -74,17 +74,17 @@ ul {
       </tr>
     </table>
   </div>
-  <div class="col-md-8" ng-show="currentSourceData.status === 'LOADING'">
-    <h4>Activity Log: {{getHumanText(polls[currentSourceData.id].status)}}</h4>
+  <div class="col-md-8" ng-show="sourceData.status === 'LOADING'">
+    <h4>Activity Log: {{getHumanText(polls[sourceData.id].status)}}</h4>
     <div id="activityLog" class="well well-md"
       style="overflow-y: auto; max-height: 350px;">
-      <span ng-show="!polls[currentSourceData.id].logEntries"> Retrieving
+      <span ng-show="!polls[sourceData.id].logEntries"> Retrieving
         activity log.... </span>
-      <pre>{{polls[currentSourceData.id].logEntries}}</pre>
+      <pre>{{polls[sourceData.id].logEntries}}</pre>
     </div>
   </div>
-  <div class="col-md-8" ng-show="currentSourceData.status === 'LOADING_FAILED'">
-    <h4>Problem Detected: {{getHumanText(currentSourceData.status)}}</h4>
+  <div class="col-md-8" ng-show="sourceData.status === 'LOADING_FAILED'">
+    <h4>Problem Detected: {{getHumanText(sourceData.status)}}</h4>
     <p>The last load either failed or was cancelled. Click one of the
       buttons below to attempt reloading or to clear the database and try again.</p>
 
@@ -99,7 +99,7 @@ ul {
       <input type="checkbox" ng-model="showFullPath"> Show Full Paths
     </div>
     <table ng-table="tpSourceDataFiles" class="table"
-      ng-show="currentSourceData.sourceDataFiles.length > 0">
+      ng-show="sourceData.sourceDataFiles.length > 0">
       <tr ng-repeat="item in $data">
         <td data-title="'Name'" sortable="'name'" stye="word-break: break-all;">{{showFullPath
           ? getFilePath(item) : item.name}}</td>

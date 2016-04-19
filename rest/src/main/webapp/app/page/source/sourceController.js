@@ -16,7 +16,7 @@ tsApp
       // Local variables
       // 
       $scope.isSnomedLoaded = null;
-      $scope.currentSourceData = null;
+      $scope.sourceData = null;
       $scope.polls = {};
 
       //
@@ -43,18 +43,18 @@ tsApp
       //
       // start load and initiate polling
       $scope.loadData = function() {
-        if (!$scope.currentSourceData) {
+        if (!$scope.sourceData) {
           console.error('no source data to load data for');
           return;
         }
-        sourceDataService.loadFromSourceData($scope.currentSourceData).then(function() {
-          $scope.startPolling($scope.currentSourceData);
+        sourceDataService.loadFromSourceData($scope.sourceData).then(function() {
+          $scope.startPolling($scope.sourceData);
         });
-        $scope.currentSourceData.status = 'LOADING';
+        $scope.sourceData.status = 'LOADING';
       };
 
       $scope.cancel = function() {
-        sourceDataService.cancelSourceDataProcess($scope.currentSourceData).then(function() {
+        sourceDataService.cancelSourceDataProcess($scope.sourceData).then(function() {
           $scope.getSourceData();
         });
       };
@@ -62,7 +62,7 @@ tsApp
       $scope.destroy = function() {
         configureService.destroy().then(function() {
           $scope.isSnomedLoaded = false;
-          $scope.currentSourceData = null;
+          $scope.sourceData = null;
 
           // factory reset and users cleared, force relogin
           $location.path('/login');
@@ -72,17 +72,28 @@ tsApp
       // TODO Add remove/clear
 
       // TODO watch for debug, remove later
-      $scope.$watch('currentSourceData', function() {
-        console.debug('current source data', $scope.currentSourceData);
+      $scope.$watch('sourceData', function() {
+        console.debug('current source data', $scope.sourceData);
       })
 
       //
       // Utility Functions
       //
 
+      $scope.resetSourceData = function() {
+        if (!$scope.sourceData || !$scope.sourceData.id) {
+          console.error('Cannot remove source data (null or no id)', $scope.sourceData);
+
+        } else {
+          sourceDataService.removeSourceData($scope.sourceData).then(function() {
+            $scope.sourceData = null;
+          });
+        }
+      };
+
       $scope.refreshFilesTable = function() {
         var files = [];
-        files = $scope.currentSourceData.sourceDataFiles;
+        files = $scope.sourceData.sourceDataFiles;
         console.debug(files);
 
         $scope.tpSourceDataFiles = new NgTableParams({}, {
@@ -91,19 +102,24 @@ tsApp
         // hides page sizes
         });
       }
-      
+
       $scope.setSourceData = function(sourceData) {
-        $scope.currentSourceData = sourceData;
-        if (!$scope.currentSourceData) {
+        $scope.sourceData = sourceData;
+        if (!$scope.sourceData) {
           console.error('Attempted to set null source data');
           return;
         }
-        if (!$scope.currentSourceData.status || $scope.currentSourceData.status === 'NEW') {
+        if (!$scope.sourceData.status || $scope.sourceData.status === 'NEW') {
           console.debug('New status detected')
-        } else if ($scope.currentSourceData.status === 'LOADING') {
+
+          // if source data has no files, delete it and reset
+          if (!$scope.sourceData.sourceDataFiles || $scope.sourceData.sourceDataFiles.length == 0) {
+            $scope.resetSourceData();
+          }
+        } else if ($scope.sourceData.status === 'LOADING') {
           console.debug('Loading status detected');
-          $scope.startPolling($scope.currentSourceData);
-        } else if ($scope.currentSourceData.status === 'LOADING_COMPLETE') {
+          $scope.startPolling($scope.sourceData);
+        } else if ($scope.sourceData.status === 'LOADING_COMPLETE') {
           console.debug('Loading complete status detected')
           $scope.isSnomedLoaded = true;
         } else {
@@ -111,14 +127,13 @@ tsApp
         }
         $scope.refreshFilesTable();
 
-      
       }
 
       $scope.getSourceData = function() {
         console.debug('get sourceData');
 
         // if no source data, get the latest
-        if (!$scope.currentSourceData) {
+        if (!$scope.sourceData) {
           sourceDataService.getSourceDatas().then(function(response) {
             console.debug('All source datas', response);
 
@@ -129,11 +144,11 @@ tsApp
               });
               $scope.setSourceData(sds[0]);
             }
-              
+
           })
         } else {
 
-          sourceDataService.getSourceData($scope.currentSourceData.id).then(function(response) {
+          sourceDataService.getSourceData($scope.sourceData.id).then(function(response) {
             $scope.setSourceData(response);
 
           });
@@ -151,7 +166,7 @@ tsApp
 
       };
       $scope.getFilePath = function(file) {
-        var id = $scope.currentSourceData.id;
+        var id = $scope.sourceData.id;
         return file.path.substring(file.path.indexOf(id) + id.toString().length + 1);
       };
 
@@ -183,10 +198,10 @@ tsApp
 
         // create the source data
         sourceDataService.updateSourceData(sourceData).then(function(newSourceData) {
-          $scope.currentSourceData = newSourceData;
+          $scope.sourceData = newSourceData;
 
           // dynamically set the upload url with the unzip flag
-          item.url = sourceDataUrl + '/upload/' + $scope.currentSourceData.id + '?unzip=true';
+          item.url = sourceDataUrl + '/upload/' + $scope.sourceData.id + '?unzip=true';
           // manually set the headers on the item's request (does not inherit from
           // $http, apparently)
           item.headers = {
@@ -200,17 +215,18 @@ tsApp
 
       };
 
+      // NOTE: Glass pane decrement and source data removal handled in onCompleteAll
       uploader.onErrorItem = function(fileItem, response, status, headers) {
-        gpService.decrement();
-        // console.info('onErrorItem', fileItem, response, status, headers);
+
+        console.info('onErrorItem', fileItem, response, status, headers);
         utilService.handleError({
           data : response ? response : "Error uploading source data",
           status : status,
           headers : headers
         });
-        $scope.getSourceData();
       };
 
+      // NOTE: Fires when single item upload either succeeds or fails
       uploader.onCompleteAll = function() {
         gpService.decrement();
         // re-retrieve source datas
