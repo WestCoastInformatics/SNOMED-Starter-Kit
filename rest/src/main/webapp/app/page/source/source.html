@@ -82,6 +82,10 @@ ul {
         activity log.... </span>
       <pre>{{polls[sourceData.id].logEntries}}</pre>
     </div>
+    <button
+      confirm="Interrupting load may require clearing database and reloading Snapshot data. Proceed anyway?"
+      class="btn btn-warning btn-md" ng-click="cancel()">Cancel</button>
+
   </div>
   <div class="col-md-8" ng-show="sourceData.status === 'LOADING_FAILED'">
     <h4>Problem Detected: {{getHumanText(sourceData.status)}}</h4>

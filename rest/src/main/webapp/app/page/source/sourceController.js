@@ -2,7 +2,7 @@
 tsApp
   .controller(
     'SourceCtrl',
-    function($scope, $location, $http, $q, $interval, NgTableParams, sourceDataService,
+    function($scope, $location, $http, $q, $interval, $uibModal, NgTableParams, sourceDataService,
       utilService, securityService, gpService, FileUploader, tabService, configureService,
       metadataService) {
       console.debug('configure SourceCtrl');
