@@ -3,8 +3,8 @@ tsApp
   .controller(
     'SourceCtrl',
     function($scope, $location, $http, $q, $interval, $uibModal, NgTableParams, sourceDataService,
-      utilService, securityService, gpService, FileUploader, tabService, configureService,
-      metadataService) {
+      utilService, contentService, securityService, gpService, FileUploader, tabService,
+      configureService, metadataService) {
       console.debug('configure SourceCtrl');
 
       // Handle resetting tabs on "back" button
@@ -32,11 +32,26 @@ tsApp
       });
 
       $scope.initialize = function() {
-        metadataService.initTerminologies().then(function(response) {
-          $scope.isSnomedLoaded = response.totalCount > 0;
+        console.log('Initializing source data controller');
+        gpService.increment();
+
+        var pfs = {
+          startIndex : 0,
+          maxResults : 1,
+          sortField : null,
+          queryRestriction : null
+        };
+        $http.post(contentUrl + 'cui/SNOMEDCT/latest?query=', pfs).then(function(response) {
+          gpService.decrement();
+          if (response.count > 0) {
+            $scope.isSnomedLoaded = true;
+          }
           $scope.getSourceData();
+        }, function(response) {
+          utilService.handleError(response);
+          gpService.decrement()
         });
-      }
+      };
 
       //
       // Load, remove, cancel functions
@@ -61,18 +76,22 @@ tsApp
 
       // destroy the database
       $scope.destroy = function() {
+        console.log('Destroy database request received');
 
         // first clear all source datas
         // intended to allow detection of discrepancies where
         // a terminology is loaded but no source datas exist
         // (i.e. incomplete, failed, or cancelled database clear
-        sourceDataService.getSourceDatas().then(function(sourceDatas) {
+        sourceDataService.getSourceDatas().then(function(data) {
+          console.debug('Destroying: deleting source datas', data.sourceDatas);
           var delCt = 0;
-          angular.forEach(sourceDatas, function(sourceData) {
-            sourceDataService.removeSourceData(sourceData).then(function() {
-              
+          angular.forEach(data.sourceDatas, function(sourceData) {
+            sourceDataService.removeSourceData(sourceData.id).then(function() {
+
               // after last source data is deleted, destroy and recreate the database
-              if (++delCt == sourceDatas.length) {
+              if (++delCt == data.sourceDatas.length) {
+                console.log('Destroying database');
+                return;
                 configureService.destroy().then(function() {
                   $scope.isSnomedLoaded = false;
                   $scope.sourceData = null;
@@ -103,19 +122,16 @@ tsApp
           console.error('Cannot remove source data (null or no id)', $scope.sourceData);
 
         } else {
-          sourceDataService.removeSourceData($scope.sourceData).then(function() {
+          sourceDataService.removeSourceData($scope.sourceData.id).then(function() {
             $scope.sourceData = null;
           });
         }
-        angular.forEach(uploader.queue, function(item) {
-          item.remove();
-        });
       };
 
       $scope.refreshFilesTable = function() {
         var files = [];
         files = $scope.sourceData.sourceDataFiles;
-        console.debug(files);
+        //console.debug(files);
 
         $scope.tpSourceDataFiles = new NgTableParams({}, {
           dataset : files,
@@ -243,6 +259,10 @@ tsApp
 
       };
 
+      uploader.onBeforeUploadItem = function(item) {
+        utilService.clearError();
+      };
+
       // NOTE: Glass pane decrement and source data removal handled in onCompleteAll
       uploader.onErrorItem = function(fileItem, response, status, headers) {
 
@@ -256,6 +276,7 @@ tsApp
 
       // NOTE: Fires when single item upload either succeeds or fails
       uploader.onCompleteAll = function() {
+        console.debug('onCompleteAll');
         gpService.decrement();
         // re-retrieve source datas
         $scope.getSourceData();
@@ -331,28 +352,11 @@ tsApp
         // perform actions nased on newly polled status
         switch (polledSourceData.status) {
         case 'LOADING_COMPLETE':
-          utilService.handleSuccess('Terminology load completed for '
-            + polledSourceData.terminology + ', ' + polledSourceData.version);
-          $scope.stopPolling(polledSourceData);
-          $scope.getSourceData();
-          break;
         case 'LOADING_FAILED':
-          utilService.setError('Terminology load failed for ' + polledSourceData.terminology + ', '
-            + polledSourceData.version);
-          $scope.stopPolling(polledSourceData);
-          $scope.getSourceData();
-          break;
         case 'REMOVAL_COMPLETE':
-          utilService.handleSuccess('Terminology removal completed for '
-            + polledSourceData.terminology + ', ' + polledSourceData.version);
-          $scope.stopPolling(polledSourceData);
-          $scope.getSourceData();
-          break;
         case 'REMOVAL_FAILED':
-          utilService.setError('Terminology removal failed for ' + polledSourceData.terminology
-            + ', ' + polledSourceData.version);
           $scope.stopPolling(polledSourceData);
-          $scope.getSourceData();
+          $scope.setSourceData(polledSourceData);
           break;
         default:
           // update poll status from data
